@@ -23,33 +23,50 @@ char* substr(const char *src, int m, int n)
 	// return the destination string
 	return dest - len;
 }
-char *xor1(char *a, char *b)
+void xor1(char *a, char *b,char* result)
 {
     int i;
-    char *result = malloc(strlen(a) + 1);
+      // printf("\n %s",a);
+      // printf("\n %s",b);
+
     for (i = 0; i < strlen(a); i++)
     {
-        result[i] = a[i] ^ b[i];
+          // printf("\n %d ",i);
+        if(a[i]=='1'&&b[i]=='1') result[i]='0';
+        if(a[i]=='0'&&b[i]=='0') result[i]='0';
+        if(a[i]=='0'||b[i]=='0') result[i]='1';
+      // printf("\n %s",result);
     }
     result[i] = '\0';
-    return result;
+    //  result;
 }
+
 char* mod2div(char* divd, char* divs)
 {
+     
     int sz=sizeof(divd)/sizeof(divd[0]);
     int len=sizeof(divs)/sizeof(divs[0]);
-    int i=0,j=0;
+    // // printf("sz %d    len %d %s",sz,len,divs);
+        int i=0,j=0;
     char *rem;
+    int k=0;
     while(i<sz){
+        
+          // printf("\nloop %d  ",++k);
+        char* result=malloc(1000*sizeof(char));
         char* nstr=substr(divd,i,i+len);
-        rem=xor1(nstr,divs);
+        //  // printf("\nnstr %s",nstr);
+    //   // printf("\ndivs %s",divs);
+        xor1(nstr,divs,result);
+        //   // printf("\n string %s",result);
         i=i+len;
-
+        // printf("%s\n",result);
         while(rem[j]!='1'){
             j++;
         }
         strcat(rem,substr(divd,i,i+j+1));
     }
+
     char* ret = "laodao";
     return ret;
 }
@@ -94,6 +111,7 @@ int randBitFlip(int m, int k)
 
 char *crcCalculator(char *data, char *sgp)
 {
+
     char *dataWithZeros = malloc(strlen(data) + strlen(sgp) - 1);
     strcpy(dataWithZeros, data);
     int i;
@@ -102,10 +120,11 @@ char *crcCalculator(char *data, char *sgp)
         strcat(dataWithZeros, "0");
     }
     char *remainder = mod2div(dataWithZeros, sgp);
-    printf("\nRemainder: %s", remainder);
+    // printf("\nRemainder: %s", remainder);
     char *crc = malloc(strlen(data) + strlen(remainder) + 1);
     strcpy(crc, data);
     strcat(crc, remainder);
+
     return crc;
 }
 
@@ -115,10 +134,10 @@ void crcSender(char *sgp, char *data)
 {
     // convert data to binary char*
     char *binData = stringToBinary(data);
-
+ 
     // calculate crc and append to fullBinData
     char *crcBin = crcCalculator(binData, sgp);
-    printf("\ncrc gen: %s", crcBin);
+    // printf("\ncrc gen: %s", crcBin);
 
     // if(checkError()){
     //     int i = randBitFlip(strlen(fullBinData), strlen(sgp));
@@ -128,7 +147,7 @@ void crcSender(char *sgp, char *data)
     //         fullBinData[i] = '0';
     //     }
     // }
-    // printf("Data sent: %s", fullBinData);
+    // // printf("Data sent: %s", fullBinData);
     // crcReceiver(sgp, data, fullBinData);
     return;
 }
@@ -148,20 +167,7 @@ int main()
     char ch;
     fp2 = fopen("input.txt", "r");
     ch = fgetc(fp2);
-    // while(ch != EOF)
-    // {
-    //     int i=0;
-    //     while(ch!=EOF && i<n){
-    //         data[i] = ch;
-    //         ch = fgetc(fp2);
-    //         i++;
-    //     }
-    //     crcSender(sgf,data);
-    //     //check for error
-    //         //if no error
-    //             //continue for next n char
-    //         //if error
-    // }
+       // printf("\ncrc gen: ");
     int i = 0;
     while (ch != EOF && i < n)
     {
@@ -171,8 +177,9 @@ int main()
     }
     fclose(fp2);
     // for(int i=0;i<n;i++){
-    //     printf("%c",data[i]);
-    // }
+    //     // printf("%c",data[i]);
+ 
     crcSender(sgf, data);
+       // printf("\nalled ");
     return 0;
 }
