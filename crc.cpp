@@ -16,9 +16,9 @@ uint8_t Crc8(vector<uint8_t> data, int len)
     crc ^= (data[idx] << 8); // shift in next byte
     for (i = 8; i; i--)
     {
-      if (crc & 0x8000)       // test highest bit
-        crc ^= (0x1070 << 3); // polynomial
-      crc <<= 1;              // shift out
+      if (crc & 0x8000)      // test highest bit
+        crc ^= (0x107 << 7); // polynomial
+      crc <<= 1;             // shift out
     }
   }
   return (uint8_t)(crc >> 8); // return 8-bit crc
