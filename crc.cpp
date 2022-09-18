@@ -57,13 +57,13 @@ void crcSender(vector<uint8_t> input, int n)
     bool status = crcReciever(input, n + 1);
     if (!status)
     {
-      // cout << "NAK Received...Resending" << endl;
+      cout << "NAK Received...Resending" << endl;
       input = original_data;
     }
   }
 
   bool status = crcReciever(input, n + 1);
-  // cout << "ACK Received..." << endl;
+  cout << "ACK Received..." << endl;
 }
 
 int main()
