@@ -29,6 +29,7 @@ bool crcReciever(vector<uint8_t> data, int len)
   uint8_t crc = Crc8(data, len);
   if (crc == 0)
   {
+    cout << endl;
     for (int i = 0; i < len - 1; i++)
     {
       cout << data[i];
@@ -42,7 +43,7 @@ bool crcReciever(vector<uint8_t> data, int len)
 void crcSender(vector<uint8_t> input, int n)
 {
   uint8_t crc = Crc8(input, n);
-  input[n] = crc;
+  input.push_back(crc);
   vector<uint8_t> original_data = input;
   int random = (rand() % n) % 2;
   int i = 5;
@@ -56,13 +57,13 @@ void crcSender(vector<uint8_t> input, int n)
     bool status = crcReciever(input, n + 1);
     if (!status)
     {
-      cout << "NAK Received...Resending" << endl;
+      // cout << "NAK Received...Resending" << endl;
       input = original_data;
     }
   }
 
   bool status = crcReciever(input, n + 1);
-  cout << "ACK Received..." << endl;
+  // cout << "ACK Received..." << endl;
 }
 
 int main()
@@ -79,15 +80,15 @@ int main()
     fullText.push_back(ch);
   }
   infile.close();
-  vector<uint8_t> input(n + 1);
+  vector<uint8_t> input;
   for (int j = 0; j < fullText.size(); j += n)
   {
-    for (int i = 0; i <= n, j + i < fullText.size(); i++)
+    for (int i = 0; i < n && j + i < fullText.size(); i++)
     {
-      input[i] = fullText[j + i];
+      input.push_back(fullText[j + i]);
     }
-    crcSender(input, n);
+    crcSender(input, input.size());
+    input.clear();
   }
-
   return 0;
 }
